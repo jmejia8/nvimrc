@@ -1,6 +1,6 @@
 # My Neovim Configuration
 
-i## Installation
+## Installation
 
 Firstly you need to install *vim-plug*:
 
