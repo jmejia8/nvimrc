@@ -6,7 +6,8 @@ set shiftwidth=4
 
 set expandtab
 map <F2> :retab <CR> :w <CR>
-
+nnoremap <C-Up> <Up>ddp<Up>
+nnoremap <C-Down> ddp
 ""set guifont=DroidSansMono\ Nerd\ Font\ 11
 
 
