@@ -1,13 +1,18 @@
 syntax on
 set number
+set numberwidth=1
 set clipboard+=unnamedplus
 set tabstop=4
 set shiftwidth=4
+set showcmd
+set showmatch
+set mouse=a
+
+let mapleader=" "
 
 set expandtab
 map <F2> :retab <CR> :w <CR>
-nnoremap <C-Up> <Up>ddp<Up>
-nnoremap <C-Down> ddp
+
 ""set guifont=DroidSansMono\ Nerd\ Font\ 11
 
 
@@ -21,13 +26,15 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/session.vim'
-""Plug 'lervag/vimtex'
+Plug 'lervag/vimtex'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'sheerun/vim-polyglot'
 Plug 'phanviet/vim-monokai-pro'
 Plug 'jpalardy/vim-slime'
 Plug 'morhetz/gruvbox'
+Plug 'glepnir/oceanic-material'
+Plug 'danilo-augusto/vim-afterglow'
 
 " nerd tree
 Plug 'scrooloose/nerdtree'
@@ -35,8 +42,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'scrooloose/nerdcommenter'
-
-
+Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
 call plug#end()
 
 "----------------------------- NERDtree ----------------------------------------
@@ -71,6 +78,10 @@ endfunction
 "let g:vimtex_compiler_progname = 'nvr'
 " julia
 
+let g:vimtex_compiler_latexmk = {
+            \ 'build_dir' : 'build',
+            \}
+
 
 inoremap " ""<left>
 inoremap ' ''<left>
@@ -82,7 +93,22 @@ inoremap {;<CR> {<CR>};<ESC>O
 tnoremap <Esc> <C-\><C-n>
 
 
-colorscheme monokai_pro
+"julia
+hi link juliaFunctionCall Identifier
+
+"colorscheme monokai_pro "molokai
+"
+"
+
+" set background=dark
+" let g:oceanic_material_allow_italic=1
+" let g:oceanic_material_allow_bold=0
+" colorscheme oceanic_material
+let g:afterglow_blackout=1
+let g:afterglow_inherit_background=1
+let g:afterglow_italic_comments=1
+colorscheme afterglow
+
 set colorcolumn=90
 
 noremap <Leader>y "*y
@@ -101,3 +127,16 @@ function RunJulia()
     call jobsend(g:term_id, cmd)
     
 endfunction
+
+
+
+let g:go_snippet_engine = "automatic"
+
+let g:UltiSnipsExpandTrigger="<tab>"
+" Use tab to switch to the next trigger point, shit+tab the previous trigger point
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
+" Split the screen vertically when using the UltiSnipsEdit command
+let g:UltiSnipsEditSplit="vertical"
+
+
