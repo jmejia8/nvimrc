@@ -7,13 +7,16 @@ set shiftwidth=4
 set showcmd
 set showmatch
 set mouse=a
+set cursorline
 
 let mapleader=" "
 
 set expandtab
 map <F2> :retab <CR> :w <CR>
-
+nnoremap <C-Up> <Up>ddp<Up>
+nnoremap <C-Down> ddp
 ""set guifont=DroidSansMono\ Nerd\ Font\ 11
+"
 
 
 call plug#begin()
@@ -36,14 +39,20 @@ Plug 'morhetz/gruvbox'
 Plug 'glepnir/oceanic-material'
 Plug 'danilo-augusto/vim-afterglow'
 
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
 " nerd tree
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'scrooloose/nerdcommenter'
+
+
+" snippets
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
+
 call plug#end()
 
 "----------------------------- NERDtree ----------------------------------------
@@ -77,11 +86,11 @@ endfunction
 "autocmd BufEnter * call SyncTree()
 "let g:vimtex_compiler_progname = 'nvr'
 " julia
-
 let g:vimtex_compiler_latexmk = {
             \ 'build_dir' : 'build',
             \}
 
+set spelllang=en spell
 
 inoremap " ""<left>
 inoremap ' ''<left>
@@ -92,24 +101,24 @@ inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
 tnoremap <Esc> <C-\><C-n>
 
-
 "julia
 hi link juliaFunctionCall Identifier
+let g:julia_highlight_operators=1
+highlight link juliaOperator Keyword
 
 "colorscheme monokai_pro "molokai
+
+"let g:rehash256 = 1
+"let g:molokai_original = 1
+"colorscheme molokai
 "
 "
 
-" set background=dark
-" let g:oceanic_material_allow_italic=1
-" let g:oceanic_material_allow_bold=0
-" colorscheme oceanic_material
-let g:afterglow_blackout=1
-let g:afterglow_inherit_background=1
-let g:afterglow_italic_comments=1
-colorscheme afterglow
+
+colorscheme gruvbox
 
 set colorcolumn=90
+
 
 noremap <Leader>y "*y
 noremap <Leader>p "*p
@@ -139,4 +148,16 @@ let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 " Split the screen vertically when using the UltiSnipsEdit command
 let g:UltiSnipsEditSplit="vertical"
 
+
+
+
+fun! SetHLGreen()
+
+
+  " jmejia
+
+  syntax match cCustomFunc "length" 
+  highlight def link cCustomFunc Function
+
+endfun
 
