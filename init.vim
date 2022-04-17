@@ -15,8 +15,6 @@ set expandtab
 map <F2> :retab <CR> :w <CR>
 nnoremap <C-Up> <Up>ddp<Up>
 nnoremap <C-Down> ddp
-""set guifont=DroidSansMono\ Nerd\ Font\ 11
-"
 
 
 call plug#begin()
@@ -52,6 +50,9 @@ Plug 'scrooloose/nerdcommenter'
 " snippets
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
+
+" indent
+Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
@@ -101,21 +102,13 @@ inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
 tnoremap <Esc> <C-\><C-n>
 
+" Color scheme
+colorscheme gruvbox
+
 "julia
 hi link juliaFunctionCall Identifier
 let g:julia_highlight_operators=1
 highlight link juliaOperator Keyword
-
-"colorscheme monokai_pro "molokai
-
-"let g:rehash256 = 1
-"let g:molokai_original = 1
-"colorscheme molokai
-"
-"
-
-
-colorscheme gruvbox
 
 set colorcolumn=90
 
@@ -124,19 +117,6 @@ noremap <Leader>y "*y
 noremap <Leader>p "*p
 noremap <Leader>Y "+y
 noremap <Leader>P "+p
-
-map <F5> :call RunJulia()<CR>
-let g:term_id = -1
-function RunJulia()
-    let cmd = "include(\"" . expand('%:t') . "\")\n"
-
-	if g:term_id == -1
-		let g:term_id = str2nr(input("term job id: "))
-	endif
-    call jobsend(g:term_id, cmd)
-    
-endfunction
-
 
 
 let g:go_snippet_engine = "automatic"
@@ -161,3 +141,15 @@ fun! SetHLGreen()
 
 endfun
 
+"set listchars=tab:>-,trail:⋅,extends:>,precedes:<
+" set listchars=tab:>·,trail:~,space:⋅
+" set list
+let g:indentLine_char_list = ['│', '| ', '┊', '┆', '⋮']
+let g:indentLine_color_term = 239
+
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
+  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
+augroup END
