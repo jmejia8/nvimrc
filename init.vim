@@ -118,6 +118,9 @@ noremap <Leader>p "*p
 noremap <Leader>Y "+y
 noremap <Leader>P "+p
 
+" Moving the cursor through long soft-wrapped lines
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
 
 let g:go_snippet_engine = "automatic"
 
