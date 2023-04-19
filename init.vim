@@ -54,7 +54,42 @@ Plug 'SirVer/ultisnips'
 " indent
 Plug 'Yggdroot/indentLine'
 
+" julia language server
+Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+
 call plug#end()
+
+"---------------------------------- Julia -----------------------------"
+" julia
+let g:default_julia_version = '1.0'
+
+" language server
+let g:LanguageClient_autoStart = 0
+let g:LanguageClient_serverCommands = {
+\   'julia': ['julia', '--startup-file=no', '--history-file=no', '-e', '
+\       using LanguageServer;
+\       using Pkg;
+\       import StaticLint;
+\       import SymbolServer;
+\       env_path = dirname(Pkg.Types.Context().env.project_file);
+\       
+\       server = LanguageServer.LanguageServerInstance(stdin, stdout, env_path, "");
+\       server.runlinter = true;
+\       run(server);
+\   ']
+\ }
+
+" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+
+" enable ncm2 for all buffers
+" autocmd BufEnter * call ncm2#enable_for_buffer()
+
+" IMPORTANT: :help Ncm2PopupOpen for more information
+" set completeopt=noinsert,menuone,noselect
 
 "----------------------------- NERDtree ----------------------------------------
 
@@ -67,6 +102,7 @@ let g:NERDTreeStatusline = ''
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Toggle
 nnoremap <silent> <C-n> :NERDTreeToggle<CR>
+nnoremap <silent> <C-m> :NERDTreeFind<CR>
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
 function! IsNERDTreeOpen()
@@ -104,6 +140,12 @@ tnoremap <Esc> <C-\><C-n>
 
 " Color scheme
 colorscheme gruvbox
+let light_mode=1
+if light_mode == 1
+  " light mode
+  set background=light
+  highlight Normal ctermfg=black ctermbg=white
+endif
 
 "julia
 hi link juliaFunctionCall Identifier
@@ -121,6 +163,7 @@ noremap <Leader>P "+p
 " Moving the cursor through long soft-wrapped lines
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
+
 
 let g:go_snippet_engine = "automatic"
 
@@ -147,8 +190,9 @@ endfun
 "set listchars=tab:>-,trail:⋅,extends:>,precedes:<
 " set listchars=tab:>·,trail:~,space:⋅
 " set list
-let g:indentLine_char_list = ['│', '| ', '┊', '┆', '⋮']
-let g:indentLine_color_term = 239
+let g:indentLine_char_list = ['┊', '┆','⋮', '│', '| ']
+" let g:indentLine_color_term = 239
+let g:indentLine_color_term = 'lightgray' " light mode only
 
 
 augroup numbertoggle
