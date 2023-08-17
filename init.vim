@@ -8,13 +8,12 @@ set showcmd
 set showmatch
 set mouse=a
 set cursorline
+set spelllang=en spell
 
 let mapleader=" "
 
 set expandtab
 map <F2> :retab <CR> :w <CR>
-nnoremap <C-Up> <Up>ddp<Up>
-nnoremap <C-Down> ddp
 
 
 call plug#begin()
@@ -28,16 +27,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/session.vim'
 Plug 'lervag/vimtex'
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'sheerun/vim-polyglot'
-Plug 'phanviet/vim-monokai-pro'
-Plug 'jpalardy/vim-slime'
 Plug 'morhetz/gruvbox'
-Plug 'glepnir/oceanic-material'
 Plug 'danilo-augusto/vim-afterglow'
 
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " nerd tree
 Plug 'scrooloose/nerdtree'
@@ -55,43 +48,11 @@ Plug 'SirVer/ultisnips'
 Plug 'Yggdroot/indentLine'
 
 " julia language server
-Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
 
 call plug#end()
 
-"---------------------------------- Julia -----------------------------"
-" julia
-let g:default_julia_version = '1.0'
 
-" language server
-let g:LanguageClient_autoStart = 0
-let g:LanguageClient_serverCommands = {
-\   'julia': ['julia', '--startup-file=no', '--history-file=no', '-e', '
-\       using LanguageServer;
-\       using Pkg;
-\       import StaticLint;
-\       import SymbolServer;
-\       env_path = dirname(Pkg.Types.Context().env.project_file);
-\       
-\       server = LanguageServer.LanguageServerInstance(stdin, stdout, env_path, "");
-\       server.runlinter = true;
-\       run(server);
-\   ']
-\ }
 
-" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-
-" enable ncm2 for all buffers
-" autocmd BufEnter * call ncm2#enable_for_buffer()
-
-" IMPORTANT: :help Ncm2PopupOpen for more information
-" set completeopt=noinsert,menuone,noselect
-
-"----------------------------- NERDtree ----------------------------------------
 
 " Configurac NERDtree
 let g:NERDTreeShowHidden = 1
@@ -101,33 +62,20 @@ let g:NERDTreeStatusline = ''
 " Automaticaly close nvim if NERDTree is only thing left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Toggle
-nnoremap <silent> <C-n> :NERDTreeToggle<CR>
-nnoremap <silent> <C-m> :NERDTreeFind<CR>
+nnoremap <silent> <C-n> :silent! NERDTreeToggle<CR>
+nnoremap <silent> <C-k> :silent! NERDTreeFind<CR>
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
 function! IsNERDTreeOpen()
   return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 endfunction
 
-" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
-" file, and we're not in vimdiff
-function! SyncTree()
-  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-    NERDTreeFind
-    wincmd p
-  endif
-endfunction
-
-
-" Highlight currently open buffer in NERDTree
-"autocmd BufEnter * call SyncTree()
-"let g:vimtex_compiler_progname = 'nvr'
-" julia
 let g:vimtex_compiler_latexmk = {
             \ 'build_dir' : 'build',
+            \ 'aux_dir' : 'build',
+            \ 'out_dir' : 'build',
             \}
 
-set spelllang=en spell
 
 inoremap " ""<left>
 inoremap ' ''<left>
@@ -140,14 +88,9 @@ tnoremap <Esc> <C-\><C-n>
 
 " Color scheme
 colorscheme gruvbox
-let light_mode=1
-if light_mode == 1
-  " light mode
-  set background=light
-  highlight Normal ctermfg=black ctermbg=white
-endif
+let light_mode=0
 
-"julia
+" color of julia
 hi link juliaFunctionCall Identifier
 let g:julia_highlight_operators=1
 highlight link juliaOperator Keyword
@@ -175,24 +118,14 @@ let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 let g:UltiSnipsEditSplit="vertical"
 
 
-
-
-fun! SetHLGreen()
-
-
-  " jmejia
-
-  syntax match cCustomFunc "length" 
-  highlight def link cCustomFunc Function
-
-endfun
-
-"set listchars=tab:>-,trail:⋅,extends:>,precedes:<
-" set listchars=tab:>·,trail:~,space:⋅
-" set list
 let g:indentLine_char_list = ['┊', '┆','⋮', '│', '| ']
-" let g:indentLine_color_term = 239
-let g:indentLine_color_term = 'lightgray' " light mode only
+
+if light_mode == 1
+  " light mode
+  set background=light
+  highlight Normal ctermfg=black ctermbg=white
+  let g:indentLine_color_term = 'lightgray' " light mode only
+endif
 
 
 augroup numbertoggle
