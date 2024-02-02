@@ -46,6 +46,8 @@ Plug 'SirVer/ultisnips'
 
 " indent
 Plug 'Yggdroot/indentLine'
+" typst
+Plug 'kaarmu/typst.vim'
 
 " julia language server
 
